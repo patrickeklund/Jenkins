@@ -54,13 +54,16 @@ public class TemplateBuilder extends Builder {
 
 		// This is where you 'build' the project.
         // Since this is a dummy, we just say 'hello world' and call that a build.
-		listener.getLogger().println("Starting Plugin [" + TemplateBuilder.class.getName() + "]");
+		listener.getLogger().println("\n" + "Start of Plugin [" + TemplateBuilder.class.getName() + "]" + "\n");
 
         // This also shows how you can consult the global configuration of the builder
         if (getDescriptor().getUseFrench())
             listener.getLogger().println("Bonjour, "+name+"!");
         else
             listener.getLogger().println("Hello, "+name+"!");
+			
+		listener.getLogger().println("\n" + "End of Plugin [" + TemplateBuilder.class.getName() + "]"+ "\n");
+
         return true;
     }
 
@@ -129,7 +132,8 @@ public class TemplateBuilder extends Builder {
          * This human readable name is used in the configuration screen.
          */
         public String getDisplayName() {
-            return "Say hello world";
+			
+            return "TemplateBuilder:" + TemplateBuilder.class.getName().toString();
         }
 
         @Override
