@@ -35,12 +35,7 @@ import java.io.IOException;
 public class TemplateBuilder extends Builder {
 
     private final String name;
-	private final static Logger LOG = Logger.getLogger(TemplatePlugin.class.getName());
 
-	public void start() throws Exception {
-		LOG.info("Starting Template plugin");
-	}
-	
     // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
     public TemplateBuilder(String name) {
@@ -56,8 +51,10 @@ public class TemplateBuilder extends Builder {
 
     @Override
     public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
-        // This is where you 'build' the project.
+
+		// This is where you 'build' the project.
         // Since this is a dummy, we just say 'hello world' and call that a build.
+		listener.getLogger().println("Starting Plugin [" + TemplateBuilder.class.getName() + "]");
 
         // This also shows how you can consult the global configuration of the builder
         if (getDescriptor().getUseFrench())
