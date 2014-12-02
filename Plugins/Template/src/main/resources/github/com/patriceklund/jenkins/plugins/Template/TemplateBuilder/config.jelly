@@ -12,4 +12,5 @@
   <f:entry title="Name" field="name">
     <f:textbox />
   </f:entry>
+  
 </j:jelly>
