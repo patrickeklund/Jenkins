@@ -93,6 +93,8 @@ public class TemplateBuilder extends Builder {
          * If you don't want fields to be persisted, use <tt>transient</tt>.
          */
         private boolean useFrench;
+        private boolean globalCheckBoxVariable;
+        private String globalTextBoxVariable;
 
         /**
          * In order to load the persisted global configuration, you have to 
@@ -141,6 +143,8 @@ public class TemplateBuilder extends Builder {
             // To persist global configuration information,
             // set that to properties and call save().
             useFrench = formData.getBoolean("useFrench");
+            globalCheckBoxVariable = formData.getBoolean("globalCheckBox");
+            globalTextBoxVariable = formData.getString("globalTextBox");
             // ^Can also use req.bindJSON(this, formData);
             //  (easier when there are many fields; need set* methods for this, like setUseFrench)
             save();
@@ -156,6 +160,29 @@ public class TemplateBuilder extends Builder {
         public boolean getUseFrench() {
             return useFrench;
         }
+        
+
+        /**
+         * This method returns true if the global configuration globalCheckBox says so.
+         *
+         * The method name is bit awkward because global.jelly calls this method to determine
+         * the initial state of the checkbox by the naming convention.
+         */
+        public boolean getglobalCheckBox() {
+            return globalCheckBoxVariable;
+        }
+
+        
+        /**
+         * This method returns the string in the global configuration globalTextBox.
+         *
+         * The method name is bit awkward because global.jelly calls this method to determine
+         * the initial state of the checkbox by the naming convention.
+         */
+        public String getglobalTextBox() {
+            return globalTextBoxVariable;
+        }
+
     }
 }
 

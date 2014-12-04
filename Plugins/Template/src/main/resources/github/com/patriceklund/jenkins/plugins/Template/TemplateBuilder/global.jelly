@@ -16,5 +16,11 @@
       description="Check if we should say hello in French">
       <f:checkbox />
     </f:entry>
+    <f:entry title="Global CheckBox" field="globalCheckBox" description="Global CheckBox Value">
+      <f:checkbox />
+    </f:entry>
+    <f:entry title="Global TextBox" field="globalTextBox" description="Global TextBox Value">
+      <f:textbox />
+    </f:entry>
   </f:section>
 </j:jelly>

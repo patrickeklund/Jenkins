@@ -12,5 +12,11 @@
   <f:entry title="Name" field="name">
     <f:textbox />
   </f:entry>
-  
+	<f:entry title="Config CheckBox" field="configCheckBox" description="Config CheckBox Value">
+		<f:checkbox />
+	</f:entry>
+	<f:entry title="Config TextBox" field="configTextBox" description="Config TextBox Value">
+		<f:textbox />
+	</f:entry>
+
 </j:jelly>
