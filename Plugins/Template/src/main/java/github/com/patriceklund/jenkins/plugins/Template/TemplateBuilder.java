@@ -3,17 +3,22 @@ import hudson.Launcher;
 import hudson.Extension;
 import hudson.util.FormValidation;
 import hudson.model.AbstractBuild;
+import hudson.model.Cause;
 import hudson.model.BuildListener;
 import hudson.model.AbstractProject;
 import hudson.tasks.Builder;
 import hudson.tasks.BuildStepDescriptor;
 import net.sf.json.JSONObject;
+
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.QueryParameter;
 
 import javax.servlet.ServletException;
+
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Sample {@link Builder}.
@@ -34,36 +39,126 @@ import java.io.IOException;
  */
 public class TemplateBuilder extends Builder {
 
-    private final String name;
+    private boolean configCheckBoxVariable;
+    private String configTextBoxVariable;
+    
+    private String getLongName() {
+        return this.getClass().getName();
+    }
 
-    // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
-    @DataBoundConstructor
-    public TemplateBuilder(String name) {
-        this.name = name;
+    private String getSimpleName() {
+        return this.getClass().getSimpleName() ;
+    }
+
+    public String getName() {
+        return getSimpleName() ;
+    }
+
+/*    protected String getCause(AbstractBuild build) { 
+        List<Cause> localCauseList = build.getCauses();
+        
+        for (String cause : build.getCauses() ) {
+        	
+        }
+        for String item in localCauseList {
+        
+        }
+        return this.cause; 
+    } 
+*/
+    
+
+    /**
+     * This method returns the value of the configuration item configCheckBox.
+     *
+     * The method name is bit awkward because <tt>config.jelly</tt> calls this method by the naming convention.
+     **/
+    public boolean getconfigCheckBox() {
+        return this.configCheckBoxVariable;
     }
 
     /**
-     * We'll use this from the <tt>config.jelly</tt>.
-     */
-    public String getName() {
-        return name;
+     * This method returns the value of the configuration item configTextBox.
+     *
+     * The method name is bit awkward because <tt>config.jelly</tt> calls this method by the naming convention.
+     **/
+    public String getconfigTextBox() {
+        return this.configTextBoxVariable;
     }
 
+    
+
+    /**
+     *  Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
+     *  
+     *  If the DataBound Constructor is used, otherwise set them with @DataBoundSetter
+     */
+    @DataBoundConstructor
+    public TemplateBuilder() {
+    	/**
+    	 *  Nothing implemented yet here 
+    	 **/
+    }
+
+    /**
+     * This method sets the value of the configuration item configCheckBox.
+     *
+     * The method name is bit awkward because <tt>config.jelly</tt> calls this method by the naming convention.
+     **/
+    @DataBoundSetter 
+    public void setconfigCheckBox(boolean configCheckBox) { 
+    	this.configCheckBoxVariable = configCheckBox; 
+	} 
+
+    /**
+     * This method sets the value of the configuration item configTextBox.
+     *
+     * The method name is bit awkward because <tt>config.jelly</tt> calls this method by the naming convention.
+     **/
+    @DataBoundSetter 
+    public void setconfigTextBox(String configTextBox) { 
+    	this.configTextBoxVariable = configTextBox; 
+	} 
+    
+    @SuppressWarnings("rawtypes")
     @Override
-    public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) {
+    public boolean perform( AbstractBuild build, Launcher launcher, BuildListener listener) {
 
 		// This is where you 'build' the project.
-        // Since this is a dummy, we just say 'hello world' and call that a build.
-		listener.getLogger().println("\n" + "Start of Plugin [" + TemplateBuilder.class.getName() + "]" + "\n");
+		listener.getLogger().println( String.format("%20s: %25s : [%s]", getSimpleName(), "Start of Plugin", getLongName() ));
+		listener.getLogger().println( String.format("%20s: ", getSimpleName() ));
+		
+		// This shows how you can consult build items of the builder
+		listener.getLogger().println( String.format("%20s: %-10s %15s : [%s]", getSimpleName(), "Build", "Display name",   build.getDisplayName() ));
+		listener.getLogger().println( String.format("%20s: %-10s %15s : [%s]", getSimpleName(), "Build", "Description",    build.getDescription() ));
+		listener.getLogger().println( String.format("%20s: %-10s %15s : [%s]", getSimpleName(), "Build", "Duration", 	   build.getDurationString() ));
+		listener.getLogger().println( String.format("%20s: %-10s %15s : [%s]", getSimpleName(), "Build", "Built on",       build.getBuiltOnStr() ));
+		listener.getLogger().println( String.format("%20s: %-10s %15s : [%s]", getSimpleName(), "Build", "Build Nr",       build.getNumber() ));
+		listener.getLogger().println( String.format("%20s: %-10s %15s : [%s]", getSimpleName(), "Build", "Build URL",      build.getUrl() ));
+		listener.getLogger().println( String.format("%20s: %-10s %15s : [%s]", getSimpleName(), "Build", "Status URL",     build.getBuildStatusUrl() ));
+		listener.getLogger().println( String.format("%20s: %-10s %15s : [%s]", getSimpleName(), "Build", "Status Summary", build.getBuildStatusSummary() ));
+		
+		// Get all possible built causes
+		@SuppressWarnings("unchecked")
+		List<Cause> causes=build.getCauses();
+		for (  Cause cause : causes) {
+			listener.getLogger().println( String.format("%20s: %-10s %15s : [%s]", getSimpleName(), "Build", "Cause", cause.getShortDescription() ));
+		}
 
-        // This also shows how you can consult the global configuration of the builder
-        if (getDescriptor().getUseFrench())
-            listener.getLogger().println("Bonjour, "+name+"!");
-        else
-            listener.getLogger().println("Hello, "+name+"!");
-			
-		listener.getLogger().println("\n" + "End of Plugin [" + TemplateBuilder.class.getName() + "]"+ "\n");
+		// This shows how you can consult the global configuration of the builder
+		listener.getLogger().println( String.format("%20s: ", getSimpleName() ));
+		listener.getLogger().println( String.format("%20s: %-10s %15s : [%s]", getSimpleName(), "Global", "Check Box", getDescriptor().getglobalCheckBox()));
+		listener.getLogger().println( String.format("%20s: %-10s %15s : [%s]", getSimpleName(), "Global", "Text Box",  getDescriptor().getglobalTextBox()));
 
+
+		// This shows how you can consult the configuration of the builder
+		listener.getLogger().println( String.format("%20s: ", getSimpleName() ));
+		listener.getLogger().println( String.format("%20s: %-10s %15s : [%s]", getSimpleName(), "Config", "Check Box", configCheckBoxVariable ));
+		listener.getLogger().println( String.format("%20s: %-10s %15s : [%s]", getSimpleName(), "Config", "Text Box",  configTextBoxVariable ));
+
+		listener.getLogger().println( String.format("%20s: ", getSimpleName() ));
+		listener.getLogger().println( String.format("%20s: %25s : [%s]", getSimpleName(), "End of Plugin", getLongName() ));
+		
         return true;
     }
 
@@ -92,7 +187,6 @@ public class TemplateBuilder extends Builder {
          * <p>
          * If you don't want fields to be persisted, use <tt>transient</tt>.
          */
-        private boolean useFrench;
         private boolean globalCheckBoxVariable;
         private String globalTextBoxVariable;
 
@@ -116,33 +210,34 @@ public class TemplateBuilder extends Builder {
          *      prevent the form from being saved. It just means that a message
          *      will be displayed to the user. 
          */
-        public FormValidation doCheckName(@QueryParameter String value)
-                throws IOException, ServletException {
+        public FormValidation doCheckconfigTextBox(@QueryParameter String value) throws IOException, ServletException {
             if (value.length() == 0)
-                return FormValidation.error("Please set a name");
+                return FormValidation.error("Please enter something");
             if (value.length() < 4)
-                return FormValidation.warning("Isn't the name too short?");
+                return FormValidation.warning("Need's to be at least 4 characters long");
+            if (value.length() > 10)
+                return FormValidation.warning("To long to be maximum 10 characters long");
             return FormValidation.ok();
         }
 
-        public boolean isApplicable(Class<? extends AbstractProject> aClass) {
+
+        @SuppressWarnings("rawtypes")
+        public boolean isApplicable( Class<? extends AbstractProject> aClass) {
             // Indicates that this builder can be used with all kinds of project types 
             return true;
         }
 
         /**
          * This human readable name is used in the configuration screen.
-         */
+         **/
         public String getDisplayName() {
-			
-            return "TemplateBuilder:" + TemplateBuilder.class.getName().toString();
+            return TemplateBuilder.class.getSimpleName().toString() + " : " + TemplateBuilder.class.getName().toString();
         }
 
         @Override
         public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
             // To persist global configuration information,
             // set that to properties and call save().
-            useFrench = formData.getBoolean("useFrench");
             globalCheckBoxVariable = formData.getBoolean("globalCheckBox");
             globalTextBoxVariable = formData.getString("globalTextBox");
             // ^Can also use req.bindJSON(this, formData);
@@ -151,36 +246,24 @@ public class TemplateBuilder extends Builder {
             return super.configure(req,formData);
         }
 
-        /**
-         * This method returns true if the global configuration says we should speak French.
-         *
-         * The method name is bit awkward because global.jelly calls this method to determine
-         * the initial state of the checkbox by the naming convention.
-         */
-        public boolean getUseFrench() {
-            return useFrench;
-        }
-        
 
         /**
-         * This method returns true if the global configuration globalCheckBox says so.
+         * This method returns the value of the configuration item globalCheckBox.
          *
-         * The method name is bit awkward because global.jelly calls this method to determine
-         * the initial state of the checkbox by the naming convention.
-         */
+         * The method name is bit awkward because <tt>global.jelly</tt> calls this method by the naming convention.
+         **/
         public boolean getglobalCheckBox() {
-            return globalCheckBoxVariable;
+            return this.globalCheckBoxVariable;
         }
 
         
         /**
-         * This method returns the string in the global configuration globalTextBox.
+         * This method returns the value of the configuration item globalTextBox.
          *
-         * The method name is bit awkward because global.jelly calls this method to determine
-         * the initial state of the checkbox by the naming convention.
-         */
+         * The method name is bit awkward because <tt>global.jelly</tt> calls this method by the naming convention.
+         **/
         public String getglobalTextBox() {
-            return globalTextBoxVariable;
+            return this.globalTextBoxVariable;
         }
 
     }
