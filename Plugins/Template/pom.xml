@@ -4,13 +4,14 @@
         <!-- which version of Jenkins is this plugin built against? Users must have at least this Jenkins version to use this plugin. -->
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>1.592</version>
+        <version>1.593</version>
     </parent>
 
     <groupId>github.com.patriceklund.jenkins.plugins</groupId>
     <artifactId>Template</artifactId>
     <version>1.0.0.0</version>
     <packaging>hpi</packaging>
+	<url>https://github.com/patriceklund/Jenkins/tree/master/Plugins/Template</url>
 	
     <licenses>
         <license>
@@ -19,28 +20,101 @@
         </license>
     </licenses>
 	
+ 	<!-- Add controbuting developers here! -->
+	<developers>
+		<developer>
+			<id>patrickeklund</id>
+			<name>Patrick Eklund</name>
+			<email>patrickeklund@hotmail.com</email>
+		</developer>
+	</developers>
+
+	<!-- Set up any properties Needed -->
+	<properties>
+		<maven-hpi-plugin.version>1.96</maven-hpi-plugin.version>
+		<maven-release-plugin.version>2.5</maven-release-plugin.version>
+		<maven-site-plugin.version>3.3</maven-site-plugin.version>
+		<rebuild-plugin.version>1.22</rebuild-plugin.version>
+	</properties>
+
+  
+	<!-- Add Build items here! -->
+	<build> 
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>${maven-site-plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins> 
+			<plugin>
+				<groupId>org.jenkins-ci.tools</groupId>
+				<artifactId>maven-hpi-plugin</artifactId>
+				<version>${maven-hpi-plugin.version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${maven-release-plugin.version}</version>
+				<configuration>
+					<goals>deploy</goals>
+				</configuration>
+			</plugin>
+		</plugins>   
+	</build> 
+
+	
+	<!-- Add all your dependencies here! -->
+	<dependencies>
+		
+		<dependency>
+			<groupId>com.sonyericsson.hudson.plugins.rebuild</groupId>
+			<artifactId>rebuild</artifactId>
+			<version>${rebuild-plugin.version}</version>
+<!--			<optional>true</optional>
+-->		</dependency>
+
+	</dependencies>
+
     <!-- get every artifact through repo.jenkins-ci.org, which proxies all the artifacts that we need -->
     <repositories>
         <repository>
             <id>repo.jenkins-ci.org</id>
             <url>http://repo.jenkins-ci.org/public/</url>
         </repository>
+		<repository>
+			<id>maven.jenkins-ci.org</id>
+			<url>http://maven.jenkins-ci.org/content/repositories/releases</url>
+		</repository>
     </repositories>
-<!--
-	<dependencies>
-		<dependency>
-			<groupId>org.jenkins-ci.plugins</groupId>
-			<artifactId>rebuild</artifactId>
-			<version>1.22</version>
-			<type>hpi</type>
-			<scope>runtime</scope>
-		</dependency>
-	</dependencies>
--->
-    <pluginRepositories>
+
+    <!-- get every artifact through repo.jenkins-ci.org, which proxies all the artifacts that we need -->
+	<pluginRepositories>
         <pluginRepository>
             <id>repo.jenkins-ci.org</id>
             <url>http://repo.jenkins-ci.org/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
+		</pluginRepository>
+		<pluginRepository>
+			<id>maven.jenkins-ci.org</id>
+			<url>http://maven.jenkins-ci.org/content/repositories/releases</url>
+		</pluginRepository>
+	</pluginRepositories>
+	
+	<distributionManagement>
+		<repository>
+			<id>maven.jenkins-ci.org</id>
+			<url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url>
+		</repository>
+	</distributionManagement>
+  
+	<scm>
+		<connection>scm:git:ssh://github.com/patriceklund/Jenkins/tree/master/Plugins/Template</connection>
+		<developerConnection>scm:git:ssh://git@github.com/patriceklund/Jenkins/tree/master/Plugins/Template</developerConnection>
+		<url>http://github.com/patriceklund/Jenkins/tree/master/Plugins/Template</url>
+	</scm>
+
 </project>
