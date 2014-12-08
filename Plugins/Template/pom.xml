@@ -9,7 +9,7 @@
 
     <groupId>github.com.patriceklund.jenkins.plugins</groupId>
     <artifactId>Template</artifactId>
-    <version>1.0.0.0</version>
+    <version>1.0.0.1</version>
     <packaging>hpi</packaging>
 	<url>https://github.com/patriceklund/Jenkins/tree/master/Plugins/Template</url>
 	
@@ -20,7 +20,7 @@
         </license>
     </licenses>
 	
- 	<!-- Add controbuting developers here! -->
+ 	<!-- Add contributing developers here! -->
 	<developers>
 		<developer>
 			<id>patrickeklund</id>
@@ -34,7 +34,6 @@
 		<maven-hpi-plugin.version>1.96</maven-hpi-plugin.version>
 		<maven-release-plugin.version>2.5</maven-release-plugin.version>
 		<maven-site-plugin.version>3.3</maven-site-plugin.version>
-		<rebuild-plugin.version>1.22</rebuild-plugin.version>
 	</properties>
 
   
@@ -70,14 +69,6 @@
 	
 	<!-- Add all your dependencies here! -->
 	<dependencies>
-		
-		<dependency>
-			<groupId>com.sonyericsson.hudson.plugins.rebuild</groupId>
-			<artifactId>rebuild</artifactId>
-			<version>${rebuild-plugin.version}</version>
-<!--			<optional>true</optional>
--->		</dependency>
-
 	</dependencies>
 
     <!-- get every artifact through repo.jenkins-ci.org, which proxies all the artifacts that we need -->
@@ -86,10 +77,6 @@
             <id>repo.jenkins-ci.org</id>
             <url>http://repo.jenkins-ci.org/public/</url>
         </repository>
-		<repository>
-			<id>maven.jenkins-ci.org</id>
-			<url>http://maven.jenkins-ci.org/content/repositories/releases</url>
-		</repository>
     </repositories>
 
     <!-- get every artifact through repo.jenkins-ci.org, which proxies all the artifacts that we need -->
@@ -98,19 +85,8 @@
             <id>repo.jenkins-ci.org</id>
             <url>http://repo.jenkins-ci.org/public/</url>
 		</pluginRepository>
-		<pluginRepository>
-			<id>maven.jenkins-ci.org</id>
-			<url>http://maven.jenkins-ci.org/content/repositories/releases</url>
-		</pluginRepository>
 	</pluginRepositories>
 	
-	<distributionManagement>
-		<repository>
-			<id>maven.jenkins-ci.org</id>
-			<url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url>
-		</repository>
-	</distributionManagement>
-  
 	<scm>
 		<connection>scm:git:ssh://github.com/patriceklund/Jenkins/tree/master/Plugins/Template</connection>
 		<developerConnection>scm:git:ssh://git@github.com/patriceklund/Jenkins/tree/master/Plugins/Template</developerConnection>
