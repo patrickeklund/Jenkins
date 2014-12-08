@@ -1,5 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <!-- which version of Jenkins is this plugin built against? Users must have at least this Jenkins version to use this plugin. -->
         <groupId>org.jenkins-ci.plugins</groupId>
@@ -12,6 +13,14 @@
     <version>1.0.0.2</version>
     <packaging>hpi</packaging>
 	<url>https://github.com/patriceklund/Jenkins/tree/master/Plugins/Template</url>
+
+	<!-- Set up any properties Needed -->
+	<properties>
+		<maven-hpi-plugin.version>1.96</maven-hpi-plugin.version>
+		<maven-release-plugin.version>2.5</maven-release-plugin.version>
+		<maven-site-plugin.version>3.3</maven-site-plugin.version>
+	</properties>
+
 	
     <licenses>
         <license>
@@ -29,14 +38,7 @@
 		</developer>
 	</developers>
 
-	<!-- Set up any properties Needed -->
-	<properties>
-		<maven-hpi-plugin.version>1.96</maven-hpi-plugin.version>
-		<maven-release-plugin.version>2.5</maven-release-plugin.version>
-		<maven-site-plugin.version>3.3</maven-site-plugin.version>
-	</properties>
-
-  
+ 
 	<!-- Add Build items here! -->
 	<build> 
 		<pluginManagement>
