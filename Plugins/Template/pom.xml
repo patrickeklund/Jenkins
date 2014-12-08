@@ -9,7 +9,7 @@
 
     <groupId>github.com.patriceklund.jenkins.plugins</groupId>
     <artifactId>Template</artifactId>
-    <version>1.0.0.1</version>
+    <version>1.0.0.2</version>
     <packaging>hpi</packaging>
 	<url>https://github.com/patriceklund/Jenkins/tree/master/Plugins/Template</url>
 	

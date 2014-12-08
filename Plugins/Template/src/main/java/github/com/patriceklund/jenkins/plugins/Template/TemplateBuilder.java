@@ -199,7 +199,12 @@ public class TemplateBuilder extends Builder {
         }
 
         /**
-         * Performs on-the-fly validation of the form field 'name'.
+         * Performs on-the-fly validation of the form
+		 *   The name of the method follows the convention "doCheckXyz" where "xyz" is the name of the field you put in your view. 
+		 *   The method gets invoked in response to the onchange event on HTML DOM.
+		 *
+		 *   The parameter name "value" is also significant. The 'throws' clause isn't.
+		 *   - https://wiki.jenkins-ci.org/display/JENKINS/Form+Validation
          *
          * @param value
          *      This parameter receives the value that the user has typed.
@@ -209,17 +214,28 @@ public class TemplateBuilder extends Builder {
          *      Note that returning {@link FormValidation#error(String)} does not
          *      prevent the form from being saved. It just means that a message
          *      will be displayed to the user. 
+		 *      
          */
-        public FormValidation doCheckconfigTextBox(@QueryParameter String value) throws IOException, ServletException {
+        public FormValidation doCheckConfigTextBox(@QueryParameter String value, @QueryParameter boolean configCheckBox) throws IOException, ServletException {
+			// This is how you include 2 values for a form check
+			if (value.length() == 0)
+				return FormValidation.error("Please enter something, CheckBox:[" + configCheckBox + "]");
+            if (value.length() < 4)
+                return FormValidation.warning("Needs to be at least 4 characters long, CheckBox:[" + configCheckBox + "]");
+            if (value.length() > 10)
+                return FormValidation.warning("To long to be maximum 10 characters long, CheckBox:[" + configCheckBox + "]");
+            return FormValidation.ok("CheckBox:[" + configCheckBox + "]");
+        }
+        public FormValidation doCheckGlobalTextBox(@QueryParameter String value) throws IOException, ServletException {
+			// This is how you include a value for a form check
             if (value.length() == 0)
                 return FormValidation.error("Please enter something");
             if (value.length() < 4)
-                return FormValidation.warning("Need's to be at least 4 characters long");
+                return FormValidation.warning("Needs to be at least 4 characters long");
             if (value.length() > 10)
                 return FormValidation.warning("To long to be maximum 10 characters long");
             return FormValidation.ok();
         }
-
 
         @SuppressWarnings("rawtypes")
         public boolean isApplicable( Class<? extends AbstractProject> aClass) {
