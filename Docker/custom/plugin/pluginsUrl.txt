@@ -1,0 +1,1 @@
+http://updates.jenkins-ci.org/latest:config-file-provider
