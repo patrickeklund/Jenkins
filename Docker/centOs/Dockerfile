@@ -6,39 +6,43 @@ MAINTAINER Patrick Eklund
 
 
 #
-# Install base packages
-#  wget
-#  curl
+# Set Base Environment Variables
 #
-RUN yum install -y wget
-RUN yum install -y curl
-RUN yum install -y zip
-RUN yum install -y unzip
-RUN yum install -y subversion
+ENV JAVA_MAJOR_VERSION 1.6.0
+ENV JAVA_MINOR_VERSION 45
+ENV JAVA_HOME          /opt/jdk${JAVA_MAJOR_VERSION}_${JAVA_MINOR_VERSION}
+ENV JAVA_FILE          jdk-6u45-linux-x64.bin
+ENV PATH               ${JAVA_HOME}/bin:${PATH}
+
+#
+# Install base packages
+#
+RUN yum install -y wget curl zip unzip xinetd subversion
 
 
 #
 # Install Java
 # 
-COPY bin/jdk-6u45-linux-x64.bin /tmp/jdk-6u45-linux-x64.bin
-RUN chmod +x /tmp/jdk-6u45-linux-x64.bin
+COPY bin/${JAVA_FILE} /tmp/${JAVA_FILE}
+RUN chmod +x /tmp/${JAVA_FILE}
 WORKDIR /opt
-RUN /tmp/jdk-6u45-linux-x64.bin
+RUN /tmp/${JAVA_FILE}
 
 #
 # activate Java on startup
 #
-COPY shell-scripts/java.sh /etc/profile.d/java.sh
-RUN chmod +x /etc/profile.d/java.sh
+#COPY shell-scripts/java.sh /etc/profile.d/java.sh
+#RUN  chmod +x /etc/profile.d/java.sh
 
 #
 # remove unused files
 #
-RUN rm -rf /tmp/jdk-6u45-linux-x64.bin
-RUN rm -rf /opt/jdk1.6.0_45/db/demo
-RUN rm -rf /opt/jdk1.6.0_45/db/docs
-RUN rm -rf /opt/jdk1.6.0_45/db/javadoc
-RUN rm -rf /opt/jdk1.6.0_45/man
-RUN rm -f /opt/jdk1.6.0_45/src.zip
+RUN yum clean all
+RUN rm -f  /tmp/${JAVA_FILE}
+RUN rm -rf ${JAVA_HOME}/db/{demo,docs,javadoc}
+RUN find ${JAVA_HOME}/ -name *.bat  | xargs rm -f 
+RUN find ${JAVA_HOME}/ -name *.html | xargs rm -f 
+RUN rm -rf ${JAVA_HOME}/man
+RUN rm -f  ${JAVA_HOME}/src.zip
 
 WORKDIR /tmp
