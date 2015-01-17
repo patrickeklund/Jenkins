@@ -1,0 +1,8 @@
+#! /bin/bash
+
+#
+# set environment variables
+#
+export CATALINA_BASE=/opt/apache-tomcat-${TOMCAT_VERSION}-instance-@instance@/
+cd $CATALINA_HOME/bin
+./shutdown.sh
