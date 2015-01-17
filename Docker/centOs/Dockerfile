@@ -18,7 +18,7 @@ ENV PATH               ${JAVA_HOME}/bin:${PATH}
 ENV TOMCAT_VERSION     7.0.57
 ENV TOMCAT_FILE        apache-tomcat-${TOMCAT_VERSION}.tar.gz
 ENV CATALINA_HOME      /opt/apache-tomcat-${TOMCAT_VERSION}
-
+ENV LD_LIBRARY_PATH    /usr/local/apr/lib
 
 #
 # Install base packages
@@ -126,4 +126,38 @@ COPY shell-scripts/start_tomcat.sh   /etc/profile.d/start_tomcat.sh
 RUN chmod +x /etc/profile.d/start_tomcat.sh
 
 
+
+#
+# Install apache tomcat Native Library
+#   native library set for tomcat with environment variable LD_LIBRARY_PATH
+#   http://www.cyberciti.biz/faq/centos-rhel-7-redhat-linux-install-gcc-compiler-development-tools/
+#   http://blogoless.blogspot.se/2012/08/how-to-install-apache-tomcat-native.html
+#
+
+# install Development tools needed to perform make
+RUN yum group install -y "Development Tools"
+
+# install apr-devel
+RUN yum install -y apr-devel openssl-devel
+
+#get native src
+WORKDIR /tmp
+RUN wget http://apache.mirrors.spacedump.net/tomcat/tomcat-connectors/native/1.1.32/source/tomcat-native-1.1.32-src.tar.gz
+RUN tar -xvzf tomcat-native-1.1.32-src.tar.gz
+
+# create binaries
+WORKDIR /tmp/tomcat-native-1.1.32-src/jni/native
+RUN ./configure --with-apr=/usr/bin/apr-1-config && make && make install
+
+
+#
+# cleanup
+#
+RUN yum clean all
+RUN rm -rf /tmp/*
+
+
+#
+# Set image workdir
+#
 WORKDIR /tmp
