@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# chkconfig: 35 90 12
+# description: apache Tomcat instance 1
+#
+# Get function from functions library
+. /etc/init.d/functions
+. /etc/profile.d/java.sh
+
+export TOMCAT_VERSION=7.0.57
+export TOMCAT_INSTANCE=1
+export CATALINA_BASE=/opt/apache-tomcat-${TOMCAT_VERSION}-instance-$TOMCAT_INSTANCE
+export CATALINA_HOME=/opt/apache-tomcat-${TOMCAT_VERSION}
+export pattern=”.*apache-tomcat-${TOMCAT_VERSION}-instance-$TOMCAT_INSTANCE.*Bootstrap.*start”
+
+# Start the service FOO
+start() {
+        logger -t tomcat-${TOMCAT_INSTANCE} "echo -n Starting tomcat instance ${TOMCAT_INSTANCE} server: "
+        ${CATALINA_HOME}/bin/startup.sh
+        ### Create the lock file ###
+#        touch /var/lock/subsys/tomcat-${TOMCAT_INSTANCE}
+        success $”tomcat instance ${TOMCAT_INSTANCE} server started”
+        echo
+}
+# Restart the service FOO
+stop() {
+        logger -t tomcat-${TOMCAT_INSTANCE} "echo -n Stopping tomcat instance ${TOMCAT_INSTANCE} server: "
+        ${CATALINA_HOME}/bin/shutdown.sh
+        ### Now, delete the lock file ###
+#        rm -f /var/lock/subsys/tomcat-${TOMCAT_INSTANCE}
+        success $”tomcat instance ${TOMCAT_INSTANCE} server stopped”
+        echo
+}
+### main logic ###
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  status)
+        status tomcat-${TOMCAT_INSTANCE}
+        ;;
+  restart|reload|condrestart)
+        stop
+        start
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart|reload|status}"
+        exit 1
+esac
+exit 0

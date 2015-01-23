@@ -38,7 +38,7 @@ RUN /tmp/${JAVA_FILE}
 #
 # activate Java on startup
 #
-COPY shell-scripts/java.sh /etc/profile.d/java.sh
+COPY etc/profile.d/java.sh /etc/profile.d/java.sh
 RUN  chmod +x /etc/profile.d/java.sh
 
 #
@@ -122,7 +122,7 @@ RUN chmod +x /opt/apache-tomcat-${TOMCAT_VERSION}-instance-2/bin/*
 
 
 # set startup both tomcat instances
-COPY shell-scripts/start_tomcat.sh   /etc/profile.d/start_tomcat.sh
+COPY etc/profile.d/start_tomcat.sh   /etc/profile.d/start_tomcat.sh
 RUN chmod +x /etc/profile.d/start_tomcat.sh
 
 
@@ -155,6 +155,12 @@ RUN ./configure --with-apr=/usr/bin/apr-1-config && make && make install
 #
 RUN yum clean all
 RUN rm -rf /tmp/*
+
+#
+# get service scripts
+#
+COPY etc/init.d/* /etc/init.d/
+RUN chmod +x /etc/init.d/tomcat-*
 
 
 #
