@@ -1,5 +1,5 @@
 # Base package to start from 
-FROM patrick/eklund:jenkins_1.594
+FROM local/jenkins:1.594
 
 # Maintainer
 MAINTAINER Patrick Eklund
